@@ -1,0 +1,102 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2106                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      p_rgh;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#include        "include/initialConditions"
+
+dimensions      [1 -1 -2 0 0 0 0];
+
+internalField   uniform $pressure;
+
+boundaryField
+{
+    //- Set patchGroups for constraint patches
+    #include "${WM_PROJECT_DIR}/etc/caseDicts/setConstraintTypes"
+
+    boundaryInlet
+    {
+        type            fixedFluxPressure;
+        gradient        uniform 0;
+        value           $internalField;
+    }
+
+    boundaryOutlet
+    {
+        type            fixedValue;
+        value           uniform 101325;
+    }
+
+    /*roofInside   
+    {
+        type            fixedFluxPressure;
+        gradient        uniform 0;
+        value           $internalField;
+    }
+
+    roofOutside
+    {
+        type            fixedFluxPressure;
+        gradient        uniform 0;
+        value           $internalField;
+    }*/
+
+    roof
+    {
+        type            fixedFluxPressure;
+        gradient        uniform 0;
+        value           $internalField;
+    }
+
+    wall
+    {
+        type            fixedFluxPressure;
+        gradient        uniform 0;
+        value           $internalField;
+    }
+
+    ground
+    {
+        type            fixedFluxPressure;
+        gradient        uniform 0;
+        value           $internalField;
+    }
+
+    boundaryYMinSide
+    {
+        type            fixedFluxPressure;
+        gradient        uniform 0;
+        value           $internalField;
+    }
+    
+    boundaryYMaxSide
+    {
+        type            fixedFluxPressure;
+        gradient        uniform 0;
+        value           $internalField;
+    }
+    
+    boundaryTop
+    {
+        type            fixedFluxPressure;
+        gradient        uniform 0;
+        value           $internalField;
+    }
+
+    #include "include/frontBackUpperPatches"
+    #includeEtc "caseDicts/setConstraintTypes"
+}
+
+
+// ************************************************************************* //

@@ -1,0 +1,318 @@
+#!/bin/bash
+cd ${0%/*} || exit 1                        # Run from this directory
+set -e
+set -o pipefail
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+######################################################################## START USER INPUT 
+# USER INPUT 
+
+# set here meteorological conditions: the "skyCloudCoverFraction" is the fraction of sky cloud cover on a scale from 0.0 (0% no clouds) to 1.0 (100% complete coverage)
+skyCloudCoverFraction=0  # = 0% no clouds, clear sunny day
+#skyCloudCoverFraction=0.5 # partially cloud
+#skyCloudCoverFraction=1  # = 100% clouds, all covered with clouds.
+# for more info about the cloud cover fraction, see : https://scool.larc.nasa.gov/lesson_plans/CloudCoverSolarRadiation.pdf
+
+# latitude [in degrees]
+latitude=35.339778
+
+# longitude arrays [in degrees]
+longitude=134.852731
+
+# GMT(グリニッジ標準時)  offset (also called local standard meridian offset) [in hours]
+gtmOffset=9
+
+# select the day of the year       
+dayNumber=360 #12/26
+# other dayNumber test examples   
+	#dayNumber=22   # 01月22  
+	#dayNumber=53   # 02月22
+	#dayNumber=81   # 03月22
+	#dayNumber=112  # 04月22
+	#dayNumber=142  # 05月22
+	#dayNumber=173  # 06月22
+	#dayNumber=203  # 07月22
+	#dayNumber=234  # 08月22
+	#dayNumber=265  # 09月22
+	#dayNumber=295  # 10月22
+	#dayNumber=326  # 11月22
+	#dayNumber=356  # 12月22
+
+# hour array (from 7:00am to 4:00pm)
+#hour=("7" "8" "9" "10" "11" "12" "13" "14" "15" "16")
+hour=("12" "13") # テスト用
+
+# Set the number of cores to be used for the parallel computation 
+totNumberOfCores=8 # since grep 'cpu ' /proc/stat | awk '{usage=($2+$4)*100/($2+$4+$5)} END {print usage "%"}' give 7% and we have 48 processors
+
+# latestTime = the latest time directory from the steady buoyantSimpleFoam run, to be used as initialization for snowMelt
+#latestTime=2000
+latestTime=500 # step テスト用
+
+################################################################# END USER INPUT
+
+touch melt.foam
+
+# copy mesh from snowFoamTestCase 
+#***計算結果の受け取り1：計算メッシュ
+cp -r ../01_snowfoam_result/zzPolyMeshBackUp/ constant/
+rm -rf constant/polyMesh
+mv constant/zzPolyMeshBackUp/ constant/polyMesh
+
+rm -rf 0
+cp -r 0.orig/ 0
+
+# copy snowDepth and snowMass fields from previous snowFoam computation. 
+#***計算結果の受け取り2：積雪深
+cp ../01_snowfoam_result/zzSnowDepthBackup 0
+if [ "$?" != "0" ]; then
+    echo "[Error] not found. Please launch snowFoamTestCase first." 1>&2
+    exit 1
+fi
+
+#***計算結果の受け取り3：積雪重量
+cp ../01_snowfoam_result/zzSnowMassBackup 0
+if [ "$?" != "0" ]; then
+    echo "[Error] not found. Please launch snowFoamTestCase first." 1>&2
+    exit 1
+fi
+
+mv 0/zzSnowDepthBackup 0/snowDepth 
+mv 0/zzSnowMassBackup 0/snowMass 
+
+# back up the 0 directory using the first number in the hour list 
+cp -r 0 zz${hour[0]} # this will come useful for paraview postprocessing
+
+# set up latest time in controlDict buoyantSimpleFoam simulation
+sed -i "/endTime/ s/^endTime.*/endTime         $latestTime;/" system/controlDict_buoyantSimpleFoam
+
+# add 1 to latest time for the additional iteration required to compute snowDepth variation in the controlDict snowMelt file
+sed -i "/endTime/ s/^endTime.*/endTime         $((latestTime+1));/" system/controlDict_snowMelt
+
+# set up required processor number in decomposeParDict
+sed -i "/numberOfSubdomains/ s/numberOfSubdomains.*/numberOfSubdomains $totNumberOfCores;/" system/decomposeParDict
+
+# checking dayNumber value and setting the correspondent A, B, C coefficients as specified in table 7, pag30.13 of the paper "Solar-load-paper-Fenestration-F01pCh30_ASHRAE.pdf" from 2001 ASHRAE Fundamental Handbook
+if [ "$dayNumber" -lt "32" ] # if January 
+then
+	Acoeff=1230.290 
+	Bcoeff=0.142 
+	Ccoeff=0.058  
+else
+	if [ "$dayNumber" -lt "60" ] # if February
+	then
+		Acoeff=1214.517 
+		Bcoeff=0.144 
+		Ccoeff=0.060 
+	else
+		if [ "$dayNumber" -lt "91" ] # if March
+		then
+			Acoeff=1186.126 
+			Bcoeff=0.156 
+			Ccoeff=0.071 
+		else	
+			if [ "$dayNumber" -lt "121" ] # if April
+			then
+				Acoeff=1135.653 
+				Bcoeff=0.180 
+				Ccoeff=0.097 
+			else	
+				if [ "$dayNumber" -lt "152" ] # if May
+				then
+					Acoeff=1104.107 
+					Bcoeff=0.196
+					Ccoeff=0.121 
+				else			
+					if [ "$dayNumber" -lt "182" ] # if June
+					then
+						Acoeff=1088.334
+						Bcoeff=0.205
+						Ccoeff=0.134 
+					else
+						if [ "$dayNumber" -lt "213" ] # if July
+						then
+							Acoeff=1085.179
+							Bcoeff=0.207
+							Ccoeff=0.136
+						else
+							if [ "$dayNumber" -lt "244" ] # if August
+							then
+								Acoeff=1107.261
+								Bcoeff=0.201
+								Ccoeff=0.122
+							else	
+								if [ "$dayNumber" -lt "274" ] # if September
+								then
+									Acoeff=1151.426
+									Bcoeff=0.177
+									Ccoeff=0.092
+								else
+									if [ "$dayNumber" -lt "305" ] # if October
+									then
+										Acoeff=1192.435
+										Bcoeff=0.160
+										Ccoeff=0.073
+									else
+										if [ "$dayNumber" -lt "335" ] # if November
+										then
+											Acoeff=1220.827
+											Bcoeff=0.149
+											Ccoeff=0.063
+										else 
+											if [ "$dayNumber" -lt "367" ] # if December
+											then
+												Acoeff=1233.445
+												Bcoeff=0.142
+												Ccoeff=0.057
+											else # max number of days in leap year 366
+												echo "Please set a dayNumber with value between 1 and 366. "
+												exit
+											fi
+										fi
+									fi
+								fi
+							fi
+						fi
+					fi
+				fi
+			fi
+		fi
+	fi
+fi
+
+#echo "Acoeff=$Acoeff" 
+#echo "Bcoeff=$Bcoeff"
+#echo "Ccoeff=$Ccoeff"
+
+# NOTE: we initially set the A coefficient taking the values from the paper, sunny day, NO CLOUDS 
+# Then, we reduce the Acoeff according to the percentage of clouds chosen by the user, using the formula found in this NASA webpage https://scool.larc.nasa.gov/lesson_plans/CloudCoverSolarRadiation.pdf
+Acoeff=$(bc <<< "$Acoeff*(1-0.75*$skyCloudCoverFraction^3)")
+
+echo ""
+echo "Performing the solar radiation calculation using the following parameters: "
+echo ""
+echo "Latitude: "
+echo $latitude
+echo ""
+echo "Longitude: "
+echo $longitude
+echo ""
+echo "GTM offset: "
+echo $gtmOffset
+echo ""
+echo "Day number: "
+echo $dayNumber
+echo ""
+echo "Hours list: "
+echo ${hour[@]}
+echo ""
+
+rm -rf constant/radiationProperties_*  
+
+rm -rf Remaining_Snow_On_Patches_Summary.txt
+touch Remaining_Snow_On_Patches_Summary.txt
+echo "SUMMARY OF REMAINING SNOW ON WALL PATCHES" >> Remaining_Snow_On_Patches_Summary.txt
+echo " " >> Remaining_Snow_On_Patches_Summary.txt
+
+d=0
+for h in ${hour[@]} 
+	do
+		#echo "hour=$h"
+		
+		# updating radiationProperties file 
+		rm -rf constant/radiationProperties
+		cp constant/radiationProperties.template constant/radiationProperties
+		
+		# update z_gtmOffset [ = GMT offset (hours) ]
+		sed -i "s/z_gtmOffset/$gtmOffset/g" constant/radiationProperties 
+		
+		# update z_longitude [ = longitude (degrees)]
+		sed -i "s/z_longitude/$longitude/g" constant/radiationProperties 
+		
+		# update z_latitude  [ = latitude (degrees) ]
+		sed -i "s/z_latitude/$latitude/g" constant/radiationProperties  	  
+		# update z_dayNumber [ = day of the year]
+		sed -i "s/z_dayNumber/$dayNumber/g" constant/radiationProperties
+
+		# update z_hour  [ = time of the day (hours decimal)]
+		sed -i "s/z_hour/${hour[$d]}/g" constant/radiationProperties
+
+		  ## ASHRAE coefficients update
+		# 1) update z_Acoeff 
+		sed -i "s/z_Acoeff/$Acoeff/g" constant/radiationProperties 	  
+		# 2) update z_Bcoeff 
+		sed -i "s/z_Bcoeff/$Bcoeff/g" constant/radiationProperties 
+		# 3) update z_Ccoeff 
+		sed -i "s/z_Ccoeff/$Ccoeff/g" constant/radiationProperties 	  
+
+		# backup file for future update and inspection
+		cp -r constant/radiationProperties constant/radiationProperties_$h 
+
+		# START buoyantSimpleFoam ###############################################
+
+		cp system/controlDict_buoyantSimpleFoam system/controlDict
+
+		decomposePar 2>&1 | tee log.decomposePar
+		# intialize fields 
+		#mpirun -np $totNumberOfCores potentialFoam -initialiseUBCs -noFunctionObjects -parallel 2>&1 | tee log.potentialFoam
+
+		rm -rf processor*/0/phi
+		#mpirun -np $totNumberOfCores applyBoundaryLayer -ybl 0.1 -parallel 2>&1 | tee log.applyBoundaryLayer 
+		mpirun -np $totNumberOfCores buoyantSimpleFoam -parallel 2>&1 | tee log.buoyantSimpleFoam
+
+
+		# START snowMelt ########################################################
+
+
+		# move decomposed snowFoam fields to latest Time  
+		a=0 
+		# the number after lt has to be the same of the number of subDomains in decomposeParDict 
+		while [ $a -lt $totNumberOfCores ] ; do
+		#echo $a
+		mv processor$a/0/snowDepth  processor$a/$latestTime  
+		mv processor$a/0/snowMass  processor$a/$latestTime
+		a=$(( $a + 1 ))
+		done
+
+		cp system/controlDict_snowMelt system/controlDict
+		mpirun -np $totNumberOfCores snowMelt -parallel 2>&1 | tee log.snowMelt
+
+		# back up log file 
+		cp log.snowMelt log.snowMelt.sun.at.hour.$((h+1))
+
+		# create summary of residual snow in a single file
+		echo "Hour $((h+1)):00" >> Remaining_Snow_On_Patches_Summary.txt
+		grep -r 'Remaining snow mass on patch' log.snowMelt >> Remaining_Snow_On_Patches_Summary.txt
+		grep -r 'Remaining snow volume on patch' log.snowMelt >> Remaining_Snow_On_Patches_Summary.txt
+
+		reconstructPar -latestTime 2>&1 | tee log.reconstructPar
+		rm -rf processor*
+
+		# copy the latest snowDepth, snowMass fields to zero directory for the next new sun position loop 
+		cp -f $((latestTime+1))/snowDepth 0/ 
+		cp -f $((latestTime+1))/snowMass 0/
+
+		# back up intermediate results 
+		mv $((latestTime+1)) $((latestTime+1)).sun.at.hour.$((h+1))
+		# if you are wondering "why $((h+1)) and not $h?" because we are backing up the results after 1 hour of solar radiation.
+
+		d=$(( $d + 1 )) # increment counter for hour number
+	done 
+
+
+# then REMOVE 0 directory so that paraview will process only the time hours
+rm -rf 0
+
+# rename the result from snowFoam before radiation
+mv zz${hour[0]} ${hour[0]} 
+
+for h in ${hour[@]} 
+	do
+		# rename the back up intermediate results using the hour number to allow easier post-processing in paraview 
+		mv $((latestTime+1)).sun.at.hour.$((h+1)) $((h+1))
+	done 
+
+
+(echo ">>-->> End of solver calculation the :" && date)
+
+#--------------------------------------------------------------------------------#

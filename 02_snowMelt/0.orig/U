@@ -1,0 +1,97 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2106                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volVectorField;
+    object      U;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#include        "include/initialConditions"
+
+dimensions      [0 1 -1 0 0 0 0];
+
+internalField   uniform (3.0 0 0);
+
+boundaryField
+{
+    //- Set patchGroups for constraint patches
+    #include "${WM_PROJECT_DIR}/etc/caseDicts/setConstraintTypes"
+
+    boundaryInlet
+    {
+        type       fixedProfile;
+        profile    csvFile;
+
+        profileCoeffs
+        {
+            nHeaderLine         1;          // Number of header lines
+            refColumn           0;          // Reference column index
+            componentColumns    (1 2 3);    // Component column indices
+            separator           ",";        // Optional (defaults to ",")
+            mergeSeparators     no;         // Merge multiple separators
+            file                "experimental_Inlet_Profile/U.csv";  // name of csv data file
+            outOfBounds         clamp;      // Optional out-of-bounds handling
+            interpolationScheme linear;     // Optional interpolation scheme
+        }
+        direction        (0 0 1);
+        origin           0;
+    }
+
+    boundaryOutlet
+    {
+        type            inletOutlet;
+        inletValue      uniform (0 0 0);
+        value           $internalField;
+    }
+
+    roof
+    {
+        type            fixedValue;
+        value           uniform (0 0 0);
+    }
+
+    wall
+    {
+        type            fixedValue;
+        value           uniform (0 0 0);
+    }
+
+        ground
+        {
+            type            fixedValue;
+            value           uniform (0 0 0);
+        }
+    boundaryYMinSide
+    {
+        type   slip;
+        //type            fixedValue;
+        //value           uniform (0 0 0);
+    }
+
+    boundaryYMaxSide
+    {
+        type   slip;
+        //type            fixedValue;
+        //value           uniform (0 0 0);
+    }
+
+    boundaryTop
+    {
+        type   slip;
+        //type            fixedValue;
+        //value           uniform (0 0 0);
+    }
+
+    #includeEtc "caseDicts/setConstraintTypes"
+}
+
+
+// ************************************************************************* //

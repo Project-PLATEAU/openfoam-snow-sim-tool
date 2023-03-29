@@ -1,0 +1,41 @@
+# Wavefront OBJ file written 2022-07-07T17:23:34
+o twoLevelsFlat_roofBuilding_edgeMesh
+
+# points : 12
+# lines  : 18
+
+# <points count="12">
+v 4.5 2.7 0.89999998
+v 4.5 -2.7 0.89999998
+v 1.8 2.7 1.8
+v 1.8 -2.7 1.8
+v 0 -2.7 1.8
+v 4.5 -2.7 0
+v 0 -2.7 0
+v 4.5 2.7 0
+v 1.8 2.7 0.89999998
+v 1.8 -2.7 0.89999998
+v 0 2.7 1.8
+v 0 2.7 0
+# </points>
+
+# <edges count="18">
+l 10 9
+l 12 11
+l 1 2
+l 9 1
+l 2 10
+l 3 4
+l 11 3
+l 4 5
+l 5 11
+l 2 6
+l 6 7
+l 7 5
+l 4 10
+l 1 8
+l 8 6
+l 3 9
+l 8 12
+l 12 7
+# </edges>

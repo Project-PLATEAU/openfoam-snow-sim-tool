@@ -1,0 +1,65 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1906                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      boundaryRadiationProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#include        "snowProperties"
+
+".*"
+{
+    type        transparent;
+
+    wallAbsorptionEmissionModel
+    {
+        type            multiBandAbsorption;
+        emissivity      (1 1);
+        absorptivity    (0 0);
+    }
+}
+
+
+// horizontal wall surfaces covered with snow
+"(roof.*|ground.*)"  
+{
+    type       opaqueDiffusive;
+    wallAbsorptionEmissionModel
+    {
+        type            multiBandAbsorption;
+
+/*
+NOTE: The BC for radiation are in "thermal equilibrium". The wall is grey-opaque-diffusive.Then absorptivity = emissivity.
+*/
+                        // visible       infrared 
+        absorptivity    ( $eps_Snow      $eps_Snow ); 
+        emissivity      ( $eps_Snow      $eps_Snow );  
+    };
+} 
+
+
+// vertical walls of buildings 
+"wall.*"
+{
+    type       opaqueDiffusive;
+    wallAbsorptionEmissionModel
+    {
+        type            multiBandAbsorption;
+        absorptivity    (0.3     0.7); 
+        emissivity      (0.3     0.7);  
+    };
+}
+
+
+
+// ************************************************************************* //

@@ -1,0 +1,255 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                   |                                               |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2012                                  |
+|   \\  /    A nd           | Web:      http://www.OpenFOAM.com			      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+FoamFile
+{
+        version	2012;
+        format      ascii;
+        class       dictionary;
+        object	snappyHexMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+castellatedMesh true;
+snap            true;
+addLayers	    true; // false;
+
+
+geometry
+{
+	twoLevelsFlat_roofBuilding.stl
+	{
+		type triSurfaceMesh;
+		name	twoLevelsFlat_roofBuilding ;
+		regions
+		{
+			roofLow
+			{
+				name	roofLow;
+			}
+			roofHigh
+			{
+				name	roofHigh;
+			}
+			wallBuilding
+			{
+				name	wallBuilding;
+			}
+		}
+	}
+	/*
+	BoxRefinement_1
+	{
+		type searchableBox ;
+		min	( -2.25 -4.32 0 );
+		max	( 6.75 4.32 3.9996 );
+	}
+
+	BoxRefinement_2
+	{
+		type searchableBox ;
+		min	( -5 -6 0 );
+		max	( 12 6 6 );
+	}
+
+	BoxRefinement_3
+	{
+		type searchableBox ;
+		min	( -9 -9 0 );
+		max	( 18 9 9);
+	}
+
+	BoxRefinement_4_ground
+	{
+		type searchableBox ;
+		min	( -20 -12 0   );
+		max	(  30  12 0.25);
+	}
+	*/
+};
+
+
+castellatedMeshControls
+{
+    maxLocalCells   200000000;
+    maxGlobalCells  300000000;
+    minRefinementCells 20;
+    nCellsBetweenLevels 3;
+    maxLoadUnbalance 0.1;
+    allowFreeStandingZoneFaces true;
+	resolveFeatureAngle	 30;
+	features
+	(
+	{
+		file "twoLevelsFlat_roofBuilding.eMesh" ;
+		level 0 ;
+	}
+	);
+    
+	refinementSurfaces
+	{
+		
+		twoLevelsFlat_roofBuilding
+		{
+			level (0 0);
+			regions
+			{
+				roofLow
+				{
+					level (0  0); // (3  4);
+				}
+				roofHigh
+				{
+					level (0  0); // (3  4);
+				}
+				wallBuilding
+				{
+					level (0  0); // (3  4);
+				}
+			}
+		}
+		
+	}
+    
+	refinementRegions
+	{
+		/*
+		BoxRefinement_1
+		{
+			mode	inside;
+			levels	((0 3));
+		}
+
+		BoxRefinement_2
+		{
+			mode	inside;
+			levels	((0 3)); // ((0 2));
+		}
+
+		BoxRefinement_3
+		{
+			mode	inside;
+			levels	((0 3)); // ((0 1));
+		}
+
+		BoxRefinement_4_ground
+		{
+			mode	inside;
+			levels	((0 3)); // ((0 1));
+		}
+		*/
+	}
+    
+	locationInMesh ( -1 0 2 ) ;
+}
+
+snapControls
+{
+    tolerance       2;
+    implicitFeatureSnap false;
+    explicitFeatureSnap true;
+    multiRegionFeatureSnap true;
+    detectNearSurfacesSnap true;
+    strictRegionSnap true;
+    nSmoothPatch    3;
+    nSolveIter      50;
+    nRelaxIter      5;
+    nFeatureSnapIter 10;
+    nSmoothInternal 3;
+    nFaceSplitInterval -1;
+}
+
+addLayersControls
+{
+	layers
+	{
+		roofLow
+		{
+			nSurfaceLayers 3; 
+			firstLayerThickness 0.12; // so if cell ~ 0.25m => first layer 0.03m  
+			expansionRatio 1.2; 
+		}
+		roofHigh
+		{
+			nSurfaceLayers 3; 
+			firstLayerThickness 0.12; 
+			expansionRatio 1.2; 
+		}
+		wallBuilding
+		{
+			nSurfaceLayers 3; 
+			firstLayerThickness 0.12; 
+			expansionRatio 1.2; 
+		}
+		ground
+		{
+			nSurfaceLayers 3; 
+			firstLayerThickness 0.12; 
+			expansionRatio 1.2; 
+		}
+	}
+	relativeSizes    true ;
+	expansionRatio    1.2 ;
+	firstLayerThickness   0.07 ;
+    featureAngle    180;
+    slipFeatureAngle 30;
+    nGrow           0;
+    nBufferCellsNoExtrude 0;
+    minMedialAxisAngle 90;
+    maxFaceThicknessRatio 0.2;
+    maxThicknessToMedialRatio 0.3;
+    minThickness    1e-08;
+    nLayerIter      50;
+    nRelaxIter      5;
+    nSmoothSurfaceNormals 10;
+    nSmoothNormals  3;
+    nSmoothThickness 10;
+    nRelaxedIter    10;
+    nMedialAxisIter 10;
+}
+
+meshQualityControls
+{
+    minVol          1e-13;
+    minTetQuality   1e-16;
+    minArea         1e-13;
+    minTwist        0.05;
+    minDeterminant  1e-06;
+    minFaceWeight   0.02;
+    minVolRatio     0.01;
+    minTriangleTwist -1;
+    minFlatness     0.5;
+    maxNonOrtho     70;
+    maxBoundarySkewness 20;
+    maxInternalSkewness 4;
+    maxConcave      80;
+    nSmoothScale    4;
+    errorReduction  0.75;
+    
+    relaxed
+    {
+        minVol          1e-30;
+        minTetQuality   1e-30;
+        minArea         1e-30;
+        minTwist        0.001;
+        minDeterminant  1e-06;
+        minFaceWeight   1e-06;
+        minVolRatio     0.01;
+        minTriangleTwist -1;
+        minFlatness     0.5;
+        maxNonOrtho     75;
+        maxBoundarySkewness 20;
+        maxInternalSkewness 8;
+        maxConcave      80;
+        nSmoothScale    4;
+        errorReduction  0.75;
+    }
+}
+mergeTolerance  1e-07;
+debug           0;

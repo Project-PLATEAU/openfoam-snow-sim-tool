@@ -1,0 +1,86 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2112                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      radiationProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+radiation       on;
+
+radiationModel  solarLoad;
+
+solarLoadCoeffs
+{
+    sunDirectionModel       sunDirConstant;
+    useVFbeamToDiffuse      false;
+    //sunDirection            (-1 0.7 -1.5);
+    localStandardMeridian   9; //0;      // GMT offset (hours)
+    startDay                360; //204;    // day of the year
+    startTime               12; //12;     // time of the day (hours decimal)
+// startTime, in this analysis simply means the "hour" in which you execute the analysis, not the "start of the day"    
+    longitude               134.852731; //0; // longitude (degrees)
+    latitude                35.339778; //0; // latitude (degrees)
+
+    // Grid orientation
+    gridUp                  (0 0 1);
+    gridEast                (1 0 0);
+
+    // Energy spectrum       visible    infrared
+    spectralDistribution    (0.47       0.5);
+    /*
+    from ASHRAE paper: 
+    the total solar direct beam flux on a clear day at sea level can be divided into spectral regions as follows. Less than 3% of the total is in the ultraviolet, 47% is in the visible region, and the remaining 50% is in the infrared.
+    Therefore 
+        spectralDistribution    (0.03 0.47 0.5);
+    To improve performance we can simplify to just 2 bands 
+        spectralDistribution    (0.47 0.5);
+    */
+
+    sunLoadModel  sunLoadFairWeatherConditions;
+
+    // Fair Weather Conditions Model Constants.
+    // Calculate beta from the Solar calculator or input
+    A       1233.445;       // Apparent solar irradiation at air mass m = 0
+    B       0.142;      // Atmospheric extinction coefficient
+    // Solar diffusivity constants
+    C       0.057;  // Model constant
+
+
+    skyCloudCoverFraction   0;
+    groundReflectivity      0.0;
+
+    // Radiative flux coupling flags
+    solidCoupled    false; // Couple through Qr the solid regions (default true)
+    wallCoupled     true;  // Couple through Qr wall patches (default false)
+
+    // Reflecting rays
+    useReflectedRays false; //true;
+    reflecting
+    {
+        nPhi        10;
+        nTheta      10;
+    }
+
+}
+
+// Number of flow iterations per radiation iteration
+solverFreq 1;
+
+absorptionEmissionModel none;
+
+scatterModel    none;
+
+sootModel       none;
+
+transmissivityModel none;
+
+// ************************************************************************* //

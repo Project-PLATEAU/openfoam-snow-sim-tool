@@ -1,0 +1,96 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1906                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+libs (turbulenceModelSchemes);
+
+application     buoyantSimpleFoam;
+
+startFrom       latestTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         500;
+
+deltaT          1;
+
+writeControl    timeStep;
+
+writeInterval   1; // 100;
+
+purgeWrite      3;
+
+writeFormat     ascii;
+
+writePrecision   8;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   8;
+
+runTimeModifiable true;
+
+functions
+{
+
+    fieldMinMax
+    {
+        type                fieldMinMax;
+        functionObjectLibs  ("libfieldFunctionObjects.so");
+        log                 yes;
+        outputControl       timeStep;
+        outputInterval      1;
+        mode                magnitude;
+        fields              ( U p T );
+    }   
+
+
+    magnitudeU
+    {
+        // Mandatory entries (unmodifiable)
+        type            mag;
+        libs            (fieldFunctionObjects);
+        log             yes;
+        outputControl   onEnd;
+        // Mandatory (inherited) entries (runtime modifiable)
+        field           U;
+        // Optional (inherited) entries
+        result          magU;
+    }
+
+    probes
+    {
+        type            probes;
+        libs            ("libsampling.so");
+        outputControl   onEnd;
+        probeLocations
+        (
+            ( 4.0  0  1.5 )  // 1 meter above roofInside patch center
+            ( 2.5  0  1.5 ) // 1 meter above roofOutside patch center
+        );
+        fixedLocations  false;
+        fields
+        (
+            U
+        );
+    }
+    
+}
+
+// ************************************************************************* //

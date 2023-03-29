@@ -1,0 +1,12 @@
+SUMMARY OF REMAINING SNOW ON WALL PATCHES
+ 
+Hour 13:00
+	Remaining snow mass on patch ground is 26777.808 kg
+	Remaining snow mass on patch roof is 3292.0803 kg
+	Remaining snow volume on patch ground is 59.50624 m^3
+	Remaining snow volume on patch roof is 7.315734 m^3
+Hour 14:00
+	Remaining snow mass on patch ground is 22932.084 kg
+	Remaining snow mass on patch roof is 1625.7294 kg
+	Remaining snow volume on patch ground is 50.960187 m^3
+	Remaining snow volume on patch roof is 3.6127319 m^3

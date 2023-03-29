@@ -1,0 +1,65 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2106                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      snowProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+
+// albedo of the snow 
+albedoSnow		0.6;			
+
+// bulk transport coefficient of sensible heat 
+C_e  			0.002;
+C_h  			0.002;
+
+// specific heat of air
+Cp_air 			1004.4; // [J/(kg K)]
+
+// emissivity of snow surface 
+eps_Snow 		0.98;   // snow is nearly a blackbody
+
+// set the following keyword to yes in order to compute snowDepth and snowMass on ground and roof patches ONLY. 
+ground_and_roofs_only yes;  // no; 
+// If set to "no" snowDepth and snowMass fields will be computed on ALL wall patches inside the fluid domain.
+
+// heat of fusion of ice
+I_c				334000; // [J/kg]
+
+// Latent heat for ice sublimation [J/kg] 
+i_subl  		2838000; // as reported in Springer "Encyclopedia of Snow, Ice and Glaciers pp 703" https://link.springer.com/referenceworkentry/10.1007/978-90-481-2642-2_329
+
+// relative humidity 
+reHu 			0.5; 
+
+// Turbulent Schmidt number to be used in the snow drift density transport equation
+sigmaS  		1.0; 
+
+// air density [kg/m^3]  it is estimated in the code as dependent on T_ref and P_ref
+// rho_air			1.007; // 2000m above sea level
+//rho_air			1.112; // 1000m above sea level  
+rho_air			1.225; // at sea level
+
+// snow density [kg/m^3]
+rho_s 			450;
+// snow density usually between 0.1 to 0.8 g/cm^3
+// https://en.wikipedia.org/wiki/Snow
+// in this test we take the average value (0.1+0.8)/2 = 0.45 g/cm^3
+
+// reference temperature of the air [in K] 
+T_ref			283.15; //10.0[C]
+
+// snow fall velocity [m/s]
+Wf 				-0.5; 
+
+
+
+// ************************************************************************* //

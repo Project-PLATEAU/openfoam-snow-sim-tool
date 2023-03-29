@@ -1,0 +1,33 @@
+PressureProbes
+{
+    libs            ("libsampling.so");
+    type            probes;
+    name            probes;
+    writeControl    timeStep;
+    writeInterval   1;
+    fields          ( p pMean U UMean);
+    
+    probeLocations
+    (  
+// using a little of offset 0.0001 instead of 0 to avoid error "skipping point location not found"
+        (    0.0 0   0.0001   )
+        (   -1.7 0   0.0001   )    
+    );
+}
+
+VelocityProbes
+{
+    libs            ("libsampling.so");
+    type            probes;
+    name            probes;
+    writeControl    timeStep;
+    writeInterval   1;
+    fields          ( U );
+    
+    probeLocations
+    (
+        (    0.0 0   0.0001   )
+        (   -1.7 0   0.0001   )     
+    );
+}
+

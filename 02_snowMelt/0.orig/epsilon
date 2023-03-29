@@ -1,0 +1,91 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2106                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      epsilon;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 2 -3 0 0 0 0];
+
+internalField   uniform 10;
+
+boundaryField
+{
+    boundaryInlet
+    {
+        type       fixedProfile;
+        profile    csvFile;
+
+        profileCoeffs
+        {
+            nHeaderLine         1;          // Number of header lines
+            refColumn           0;          // Reference column index
+            componentColumns    (1);    // Component column indices
+            separator           ",";        // Optional (defaults to ",")
+            mergeSeparators     no;         // Merge multiple separators
+            file                "experimental_Inlet_Profile/epsilon.csv";  // name of csv data file
+            outOfBounds         clamp;      // Optional out-of-bounds handling
+            interpolationScheme linear;     // Optional interpolation scheme
+        }
+        direction        (0 0 1);
+        origin           0;
+    }
+
+    boundaryOutlet
+    {
+        type            inletOutlet;
+        inletValue      $internalField;
+        value           $internalField;
+    }
+
+    roof
+    {
+        type            epsilonWallFunction;
+        value           $internalField;
+    }
+
+    wall
+    {
+        type            epsilonWallFunction;
+        value           $internalField;
+    }
+
+        ground
+        {
+            type            epsilonWallFunction;
+            value           $internalField;
+        }
+    boundaryYMinSide
+    {
+        type   slip;
+        //type            epsilonWallFunction;
+        //value           $internalField;
+    }
+
+    boundaryYMaxSide
+    {
+        type   slip;
+        //type            epsilonWallFunction;
+        //value           $internalField;
+    }
+
+    boundaryTop
+    {
+        type   slip;
+        //type            epsilonWallFunction;
+        //value           $internalField;
+    }
+
+    #includeEtc "caseDicts/setConstraintTypes"
+}
+
+// ************************************************************************* //
