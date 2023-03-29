@@ -1,0 +1,3 @@
+snowMelt.C
+
+EXE = $(FOAM_APPBIN)/snowMelt
