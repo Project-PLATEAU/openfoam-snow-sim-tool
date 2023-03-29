@@ -1,0 +1,17 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+pressure				101325;
+turbulentKE				0.27; 
+turbulentOmega			1.78;
+snowDriftDensityInlet	0.00164; //kg/m^3 
+temperature             273.15; // hypothesis: snowing at 0deg celsius
+
+#inputMode            merge
+
+// ************************************************************************* //

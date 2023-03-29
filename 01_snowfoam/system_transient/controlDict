@@ -1,0 +1,128 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  plus
+t                      |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     snowFoam;
+startFrom       latestTime;
+startTime       0;
+stopAt          endTime;
+endTime         600;
+deltaT          1; //0.1;
+writeControl    adjustable;
+writeInterval   100;
+purgeWrite      0; //10;
+writeFormat     ascii;
+writePrecision  5;
+writeCompression off;
+timeFormat      general;
+timePrecision   5;
+runTimeModifiable true;
+adjustTimeStep  no;
+maxCo           1;
+maxDeltaT       1;
+
+
+functions
+{
+    snowDepthBeforeRadiationVTK
+    {
+        type            surfaces;
+        functionObjectLibs ( "libsampling.so" );
+        outputControl   onEnd; //outputTime
+        // writeControl       timeStep;
+        // writeInterval   100;
+        surfaceFormat   vtk;
+        fields          ( snowDepth );
+        interpolationScheme cellPoint;
+        surfaces
+        (
+          roof
+          {
+              type patch;
+              // patches (roofLow roofHigh);
+			  patches ("roof.*");
+              interpolate true;
+          }
+          ground
+          {
+              type patch;
+              // patches (roofLow roofHigh);
+			  patches ("ground.*");
+              interpolate true;
+          }
+        );
+    }
+
+    snowDepthBeforeRadiationEnsight
+    {
+        type            surfaces;
+        functionObjectLibs ( "libsampling.so" );
+        outputControl   onEnd; //outputTime
+        // writeControl       timeStep;
+        // writeInterval   100;
+        surfaceFormat   ensight;
+        fields          ( snowDepth );
+        interpolationScheme cellPoint;
+        surfaces
+        (
+          roof
+          {
+              type patch;
+              // patches (roofLow roofHigh);
+			  patches ("roof.*");
+              interpolate true;
+          }
+          ground
+          {
+              type patch;
+              // patches (roofLow roofHigh);
+			  patches ("ground.*");
+              interpolate true;
+          }
+        );
+    }
+
+
+    fieldMinMax
+    {
+        type                fieldMinMax;
+        libs  ("libfieldFunctionObjects.so");
+        log                 yes;
+        mode                magnitude;
+        fields              ( U p T snowDepth);
+        //writeControl        timeStep;
+        //writeInterval   100;
+        writeControl    writeTime;
+        writeFields     false;
+    }
+
+
+   /* limitFields1
+    {
+        type            limitFields;
+        libs            (fieldFunctionObjects);
+        fields          (snowDriftDensity);
+        limit           both;
+        log             no;
+        min             0;
+        max             5; // 10;
+        writeControl    writeTime;
+    }*/
+
+};
+
+// ************************************************************************* //

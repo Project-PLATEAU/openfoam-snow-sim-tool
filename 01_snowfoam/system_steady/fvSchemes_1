@@ -1,0 +1,79 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  plus                              |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSchemes;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+ddtSchemes
+{
+    default             steadyState ;
+
+}
+gradSchemes
+{
+    default             cellLimited Gauss linear 1.0;
+    grad(p)     Gauss linear;
+    grad(U)     Gauss linear;
+}
+divSchemes
+{
+    default             none;
+    div(phi,U)          bounded Gauss linearUpwindV grad(U);
+    div(phi,k)          bounded Gauss limitedLinear 1.0;
+
+    div(phi,h)          bounded Gauss limitedLinear 1.0;
+  
+    div(phi,e)          bounded Gauss limitedLinear 1.0;
+    div(phi,nuTilda)    bounded Gauss limitedLinear 1.0;
+    div(phi,Ekp)        bounded Gauss limitedLinear 1.0;
+    div(phi,omega)  bounded  Gauss limitedLinear 1.0;
+    div(phi,epsilon)      bounded  Gauss limitedLinear 1.0;
+    div(phiv,p)         Gauss linear;
+    div(phi,K)      bounded  Gauss linear;
+    div(div(phi,U)) Gauss linear;
+    div(((rho*nuEff)*dev2(T(grad(U)))))      Gauss linear;
+    div((nuEff*dev2(T(grad(U))))) Gauss linear;
+    div(meshPhi,p)  Gauss linear;
+   
+}
+
+interpolationSchemes
+{
+    default         linear;
+    interpolate(U)  linear;
+}
+laplacianSchemes
+{
+    default         Gauss linear limited corrected 0.333;
+    laplacian(yPsi) Gauss linear corrected;
+
+}
+snGradSchemes
+{
+    default         limited corrected 0.333;
+}
+fluxRequired
+{
+    default         no;
+    p               ;
+    Phi             ;
+      yPsi            ;
+    pcorr     ;
+}
+wallDist
+{
+    method Poisson;
+}
+
+

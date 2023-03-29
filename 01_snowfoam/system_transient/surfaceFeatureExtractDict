@@ -1,0 +1,31 @@
+/*--------------------------------*- C++ -*---------------------------------*\
+| =========                |                                                 |
+| \      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \    /   O peration     | Version:  2012				                     |
+|   \  /    A nd           | Web:      http://www.OpenFOAM.com				 |
+|    \/     M anipulation  |                                                 |
+\*--------------------------------------------------------------------------*/
+
+
+FoamFile
+{
+    version         2012;
+    format          ascii;
+    class           dictionary;
+    object          surfaceFeatureExtractDict;
+    location        "system";
+}
+
+//Building_wall2.stl
+//Building_roll.stl
+terrain_wadayama.stl
+{
+    extractionMethod extractFromSurface;
+    writeObj        yes;
+
+    extractFromSurfaceCoeffs
+    {
+        includedAngle   150;
+            //includedAngle   100;
+    }
+}

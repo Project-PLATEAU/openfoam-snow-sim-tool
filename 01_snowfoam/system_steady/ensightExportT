@@ -1,0 +1,20 @@
+    exportEnsight
+    {
+        type            surfaces;
+        functionObjectLibs ( "libsampling.so" );
+        outputControl   outputTime;
+        //writeControl       timeStep;
+        //writeInterval      1;     
+        surfaceFormat   ensight;
+        fields          ( T );
+        interpolationScheme cellPoint;
+        surfaces
+        (
+          testCaseEnsightFile
+          {
+              type patch;
+              patches (Outside_Wrap_Elements);
+              interpolate true;
+          }
+        );
+    } 

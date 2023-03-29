@@ -1,0 +1,41 @@
+	/*--------------------------------*- C++ -*---------------------------------*\
+	| =========                |                                                |
+	| \      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+	|  \    /   O peration     | Version:  2.3.0                                 |
+	|   \  /    A nd           | Web:      http://www.OpenFOAM.org               |
+	|    \/     M anipulation  |                                                 |
+	\*--------------------------------------------------------------------------*/
+
+
+	FoamFile
+	{
+		version         2.3;
+		format          ascii;
+		class           dictionary;
+		object          fvOptions;
+		location        "system";
+	}
+
+
+
+	damp
+	{
+		 type            velocityDampingConstraint;
+		 active          true;
+
+		 velocityDampingConstraintCoeffs
+		 {
+		     UMax    50;
+		     selectionMode   all;
+		 }
+	}
+
+	limitT
+{
+    type            limitTemperature;
+    active          yes;
+
+    selectionMode   all;
+    min             223.15;  // -50 deg celsius limiter
+    max             323.15;  // +50 deg celsius limiter
+}

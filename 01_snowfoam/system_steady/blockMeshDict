@@ -1,0 +1,102 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                   |                                               |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2012                                  |
+|   \\  /    A nd           | Web:      http://www.OpenFOAM.com			      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+FoamFile
+{
+    version	2012;
+    format      ascii;
+	 root        ;
+	 case        ;
+	 instance    ;
+	 local        ;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+scale	 1;
+
+vertices
+(
+
+// compact domain
+		
+        ( 46880.0 -73200.0  65.0)
+        ( 47105.0 -73200.0  65.0)
+        ( 47105.0 -73108.0  65.0)
+        ( 46880.0 -73108.0  65.0)
+        ( 46880.0 -73200.0  125.0)
+        ( 47105.0 -73200.0  125.0)
+        ( 47105.0 -73108.0  125.0)
+        ( 46880.0 -73108.0  125.0)
+);
+
+blocks
+(
+	hex (0 1 2 3 4 5 6 7)
+ // ( 215 175 30 ) // cellsize 2.0m
+  ( 56 23 15 ) // cellsize 4.0m
+	simpleGrading ( 1 1 1 )
+);
+
+edges
+(
+);
+
+boundary
+(
+	boundaryInlet
+	{
+		type patch;
+		faces
+		(
+			(0 4 7 3)
+		);
+	}
+	boundaryOutlet
+	{
+		type patch;
+		faces
+		(
+			(1 2 6 5)
+		);
+	}
+	boundaryYMinSide
+	{
+		type wall;
+		faces
+		(
+			(0 1 5 4)
+		);
+	}
+	boundaryYMaxSide
+	{
+		type wall;
+		faces
+		(
+			(3 7 6 2)
+		);
+	}
+	ground
+	{
+		type wall;
+		faces
+		(
+			(0 3 2 1)
+		);
+	}
+	boundaryTop
+	{
+		type wall;
+		faces
+		(
+			(4 5 6 7)
+		);
+	}
+);

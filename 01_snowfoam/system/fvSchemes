@@ -1,0 +1,94 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  plus                                  |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSchemes;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+ddtSchemes
+{
+    default             Euler; //backward;
+
+}
+
+gradSchemes
+{
+    default     cellLimited Gauss linear 1.0;
+    grad(snowDriftDensity) faceLimited Gauss linear 1.0; 
+    grad(p)     Gauss linear;
+    grad(U)     Gauss linear;
+}
+
+divSchemes
+{
+    default          none;
+
+    div(phi,U)       Gauss limitedLinearV 1;
+    div(U)           Gauss linear;
+
+    div(phid,p)      Gauss limitedLinear 1;
+    div(phi,k)       Gauss limitedLinear 1.0;
+    div(phi,h)       Gauss limitedLinear 1;
+
+    turbulence       Gauss limitedLinear 1;
+    div(phi,k)       $turbulence;
+    div(phi,K)       $turbulence;
+    div(phi,epsilon) $turbulence;
+    div(phi,R)       $turbulence;
+    div(phi,omega)   $turbulence;
+    div((rho*R))     Gauss linear;
+    div(R)           Gauss linear;
+
+    div(((rho*nuEff)*dev2(T(grad(U))))) Gauss linear;
+
+    div(phi,snowDriftDensity)     Gauss QUICK; // Gauss linearUpwind grad(snowDriftDensity); //Gauss QUICK;
+
+    // div(phi,snowDepth)      Gauss linearUpwind grad(snowDepth);
+}
+
+interpolationSchemes
+{
+    default         linear;
+    interpolate(U)  linear;
+}
+
+laplacianSchemes
+{
+    default         Gauss linear limited corrected 0.333;
+    laplacian(yPsi) Gauss linear corrected;
+	laplacian(snowDriftDensity) Gauss linear corrected;  // <--
+
+}
+
+snGradSchemes
+{
+    default         limited corrected 0.333;
+}
+
+fluxRequired
+{
+    default         no;
+    p               ;
+    Phi             ;
+    yPsi            ;
+    pcorr     ;
+}
+wallDist
+{
+    method Poisson;
+}
+
+
+
+// ************************************************************************* //

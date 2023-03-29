@@ -1,0 +1,38 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2106                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      snowProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// snow density [kg/m^3]
+rho_s 			100;
+
+Utstar   0.25;
+
+// Turbulent Schmidt number to be used in the snow drift density transport equation
+sigmaS  1.0; 
+
+// snow fall velocity [m/s]
+Wf      -0.5; 
+
+// set the following keyword to yes in order to compute snowDepth and snowMass on ground and roof patches ONLY. 
+ground_and_roofs_only yes;  // no; 
+// If set to "no" snowDepth and snowMass fields will be computed on ALL wall patches inside the fluid domain.  
+
+  
+
+
+
+
+
+// ************************************************************************* //

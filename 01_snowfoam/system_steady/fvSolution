@@ -1,0 +1,317 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1906                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+
+solvers
+{
+
+
+    "(p|Phi)"
+    {
+        solver          GAMG;
+        agglomerator    faceAreaPair;
+        mergeLevels     1;
+        cacheAgglomeration true;
+        nCellsInCoarsestLevel 200;
+        tolerance       1e-12;
+        relTol          0.05;
+        smoother        GaussSeidel;
+        nPreSweeps      0;
+        nPostSweeps     2;
+        nFinestSweeps   2;
+        nVcycles        1;
+        minIter         1;
+    }
+
+    pcorr
+    {
+        solver          GAMG;
+        agglomerator    faceAreaPair;
+        mergeLevels     1;
+        cacheAgglomeration true;
+        nCellsInCoarsestLevel 200;
+        tolerance       1e-20;
+        relTol          0.01;
+        smoother        GaussSeidel;
+        nPreSweeps      0;
+        nPostSweeps     2;
+        nFinestSweeps   2;
+        nVcycles        1;
+    }
+
+
+
+/*    "(p|rho)"
+    {
+        solver          PCG;
+        preconditioner  DIC;
+        tolerance       1e-20;
+        relTol          0.05;
+    }*/
+
+    "(p|rho)Final"
+    {
+        $p;
+        tolerance       1e-12;
+        relTol          0.0;
+        minIter     1;
+    };
+
+    U
+    {
+        solver           smoothSolver;
+        smoother         symGaussSeidel;
+        tolerance        1e-20;
+        relTol           0.1;
+        nSweeps          1;
+    }
+
+    yPsi
+    {
+       solver          GAMG;
+        agglomerator    faceAreaPair;
+        mergeLevels     1;
+        cacheAgglomeration true;
+        nCellsInCoarsestLevel 200;
+        tolerance       1e-12;
+        relTol          0.0001;
+        smoother        GaussSeidel;
+        nPreSweeps      0;
+        nPostSweeps     2;
+        nFinestSweeps   2;
+        nVcycles        1;
+        minIter         1;
+    }
+    nuTilda
+    {
+        solver           smoothSolver;
+        smoother         symGaussSeidel;
+        tolerance        1e-20;
+        relTol           0.1;
+        nSweeps          1;
+    }
+
+    e
+    {
+        solver           smoothSolver;
+        smoother         symGaussSeidel;
+        tolerance        1e-20;
+        relTol           0.1;
+        nSweeps          1;
+    }
+
+    k
+    {
+        solver           smoothSolver;
+        smoother         symGaussSeidel;
+        tolerance        1e-20;
+        relTol           0.1;
+        nSweeps          1;
+    }
+
+    omega
+    {
+        solver           smoothSolver;
+        smoother         symGaussSeidel;
+        tolerance        1e-20;
+        relTol           0.1;
+        nSweeps          1;
+    }
+
+    epsilon
+    {
+        solver           smoothSolver;
+        smoother         symGaussSeidel;
+        tolerance        1e-20;
+        relTol           0.1;
+        nSweeps          1;
+    }
+
+    h
+    {
+        solver           smoothSolver;
+        smoother         symGaussSeidel;
+        tolerance        1e-10;
+        relTol           0.1;
+        nSweeps          1;
+    }
+
+    UFinal
+    {
+        solver           smoothSolver;
+        smoother         symGaussSeidel;
+        tolerance        1e-10;
+        relTol           0.0;
+        nSweeps          1;
+        minIter          1;         
+    }
+
+    nuTildaFinal
+    {
+        solver           smoothSolver;
+        smoother         symGaussSeidel;
+        tolerance        1e-06;
+        relTol           0.1;
+        nSweeps          1;
+    }
+
+    eFinal
+    {
+        solver           smoothSolver;
+        smoother         symGaussSeidel;
+        tolerance        1e-20;
+        relTol           0.1;
+        nSweeps          1;
+    }
+
+    kFinal
+    {
+        solver           smoothSolver;
+        smoother         symGaussSeidel;
+        tolerance        1e-10;
+        relTol           0.0;
+        nSweeps          1;
+    }
+
+   epsilonFinal
+    {
+        solver           smoothSolver;
+        smoother         symGaussSeidel;
+        tolerance        1e-10;
+        relTol           0.0;
+        nSweeps          1;
+    }
+
+   omegaFinal
+    {
+        solver           smoothSolver;
+        smoother         symGaussSeidel;
+        tolerance        1e-10;
+        relTol           0.0;
+        nSweeps          1;
+    }
+
+    hFinal
+    {
+        solver           smoothSolver;
+        smoother         symGaussSeidel;
+        tolerance        1e-10;
+        relTol           0.0;
+        nSweeps          1;
+    }
+
+      ".*(rho|rhoFinal)"
+    {
+        solver          diagonal;
+    }
+
+  /*  pcorr
+    {
+        solver          PCG;
+        preconditioner
+        {
+            preconditioner  GAMG;
+            tolerance       1e-05;
+            relTol          0;
+            smoother        DICGaussSeidel;
+            nPreSweeps      0;
+            nPostSweeps     2;
+            nFinestSweeps   2;
+            cacheAgglomeration false;
+            nCellsInCoarsestLevel 10;
+            agglomerator    faceAreaPair;
+            mergeLevels     1;
+        }
+
+        tolerance       1e-05;
+        relTol          0;
+        maxIter         200;
+    }
+*/
+
+}
+
+SIMPLE
+{
+    nNonOrthogonalCorrectors 2;
+    rhoMin          0.5;
+    rhoMax          2.5;
+    transonic       no;
+    consistent      yes;
+}
+
+potentialFlow
+{
+    nNonOrthogonalCorrectors 10;
+}
+
+PIMPLE
+{
+    nOuterCorrectors 7;
+    nCorrectors     2;
+    nNonOrthogonalCorrectors 1;
+    rhoMin          0.1;
+    rhoMax          2.0;
+    transonic       no;
+    consistent       no;
+    correctPhi      yes;
+    momentumPredictor   yes;
+
+}
+
+/*
+relaxationFactors
+{
+    default         0.9;
+    U               0.9;
+    rho             0.9;
+    p               0.9;
+    h               0.9;   
+    e               0.9;        
+    pFinal          1;
+    UFinal          1;
+    eFinal          1;
+    nuTildaFinal    1;
+    kFinal          1;
+    omegaFinal      1;
+    hFinal          1;
+    epsilonFinal    1;
+    rhoFinal        1;      
+}
+*/
+
+
+relaxationFactors
+{
+    fields
+    {
+        p               0.5; // 0.3
+        rho             0.05;
+    }
+    equations
+    {
+        default     0.7;
+        p       0.6;  // 0.2
+        U               0.6;
+        "(k|epsilon)"    0.6;
+        h       0.8;
+    }
+}
+
+
+// ************************************************************************* //

@@ -1,0 +1,78 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  plus                                  |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      snowMass;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#include        "include/initialConditions"
+
+dimensions      [1 0 0 0 0 0 0];  // snowMass dimension == Kg
+
+internalField   uniform 0;
+
+boundaryField
+{
+    //- Set patchGroups for constraint patches
+    #include "${WM_PROJECT_DIR}/etc/caseDicts/setConstraintTypes"
+
+    boundaryInlet
+    {
+        type            fixedValue;
+        value           uniform 0;
+    }
+
+    boundaryOutlet
+    {
+        type            fixedValue;
+        value           uniform 0;
+    }
+
+    wall
+    {
+        type            fixedValue;
+        value           uniform 0;
+    }
+
+    roof
+    {
+        type            fixedValue;
+        value           uniform 0;
+    }
+
+    ground
+    {
+        type            fixedValue;
+        value           uniform 0;
+    }
+
+    boundaryYMinSide
+    {
+        type            fixedValue;
+        value           uniform 0;
+    }
+
+    boundaryYMaxSide
+    {
+        type            fixedValue;
+        value           uniform 0;
+    }
+
+    boundaryTop
+    {
+        type            fixedValue;
+        value           uniform 0;
+    }
+}
+
+
+// ************************************************************************* //

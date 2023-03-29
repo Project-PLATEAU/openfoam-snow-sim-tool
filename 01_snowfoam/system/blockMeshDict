@@ -1,0 +1,115 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                   |                                               |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2012                                  |
+|   \\  /    A nd           | Web:      http://www.OpenFOAM.com			      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+FoamFile
+{
+    version	2012;
+    format      ascii;
+	 root        ;
+	 case        ;
+	 instance    ;
+	 local        ;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+scale	 1;
+
+vertices
+(
+
+// compact domain
+
+        /*( 46900.0 0.0  65.0)
+        ( 47290.0 0.0  65.0)
+        ( 47290.0 250.0  65.0)
+        ( 46900.0 250.0  65.0)
+        ( 46900.0 0.0  100.0)
+        ( 47290.0 0.0  100.0)
+        ( 47290.0 250.0  100.0)
+        ( 46900.0 250.0  100.0)*/
+
+        ( 46900.0 -73190.0  65.0)
+        ( 47290.0 -73190.0  65.0)
+        ( 47290.0 -72940.0  65.0)
+        ( 46900.0 -72940.0  65.0)
+        ( 46900.0 -73190.0  125.0)
+        ( 47290.0 -73190.0  125.0)
+        ( 47290.0 -72940.0  125.0)
+        ( 46900.0 -72940.0  125.0)
+);
+
+blocks
+(
+	hex (0 1 2 3 4 5 6 7)
+  ( 195 125 30 ) // cellsize 2.0m
+ // ( 195 25 18 )
+ // ( 20 20 28 )
+		//( 746 490 30 ) // cellsize 0.5m,Z 1.0m
+	//( 50 40 16 ) // wide
+	//( 50 40 25 ) // tall
+	simpleGrading ( 1 1 1 )
+);
+
+edges
+(
+);
+
+boundary
+(
+	boundaryInlet
+	{
+		type patch;
+		faces
+		(
+			(0 4 7 3)
+		);
+	}
+	boundaryOutlet
+	{
+		type patch;
+		faces
+		(
+			(1 2 6 5)
+		);
+	}
+	boundaryYMinSide
+	{
+		type wall;
+		faces
+		(
+			(0 1 5 4)
+		);
+	}
+	boundaryYMaxSide
+	{
+		type wall;
+		faces
+		(
+			(3 7 6 2)
+		);
+	}
+	ground
+	{
+		type wall;
+		faces
+		(
+			(0 3 2 1)
+		);
+	}
+	boundaryTop
+	{
+		type wall;
+		faces
+		(
+			(4 5 6 7)
+		);
+	}
+);

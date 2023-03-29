@@ -1,0 +1,268 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                   |                                               |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2012                                  |
+|   \\  /    A nd           | Web:      http://www.OpenFOAM.com			      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+FoamFile
+{
+        version	2012;
+        format      ascii;
+        class       dictionary;
+        object	snappyHexMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+castellatedMesh true;
+snap            true;
+addLayers	 false;
+
+
+geometry
+{
+	terrain_wadayama.stl
+	{
+		type triSurfaceMesh;
+		name	terrain_wadayama ;
+		regions
+		{
+			roofs
+			{
+				name	roof;
+			}
+			walls
+			{
+				name	wall;
+			}
+			grounds
+			{
+				name	ground;
+			}
+		}
+	}
+	
+	BoxRefinement_1 //朝来市霊場第二番(駅前)横
+	{
+		type searchableBox ;
+		min	( 46989.0 -72983.0 0 );
+		max	( 46999.0 -72980.0 80 );
+	}
+	BoxRefinement_2 //中央理容所横
+	{
+		type searchableBox ;
+		min	( 47058.0 -73103.0 0 );
+		max	( 47062.0 -73099.0 80 );
+	}
+	BoxRefinement_3 //谷村歯科横
+	{
+		type searchableBox ;
+		min	( 47131.0 -73112.0 0 );
+		max	( 47135.0 -73108.0 80 );
+	}
+	BoxRefinement_4 //谷村歯科の東側のビル
+	{
+		type searchableBox ;
+		min	( 47141.0 -73128.0 0 );
+		max	( 47148.0 -73124.0 80 );
+	}
+	BoxRefinement_5 //但馬信用金庫
+	{
+		type searchableBox ;
+		min	( 47161.0 -73070.0 0 );
+		max	( 47170.0 -73066.0 80 );
+	}
+	BoxRefinement_5-2 //但馬信用金庫_細分化
+	{
+		type searchableBox ;
+		min	( 47163.0 -73069.0 0 );
+		max	( 47169.0 -73067.0 80 );
+	}
+};
+
+castellatedMeshControls
+{
+    maxLocalCells   200000000;
+    maxGlobalCells  300000000;
+    minRefinementCells 0;//20;
+    nCellsBetweenLevels 1;//4;
+    maxLoadUnbalance 0.1;
+    allowFreeStandingZoneFaces true;
+	  resolveFeatureAngle	30;
+
+	features
+	(
+	{
+		file "terrain_wadayama.eMesh" ;
+		level 2;
+	}
+	);
+
+	refinementSurfaces
+	{
+		terrain_wadayama
+		{
+			level (0 2);
+			regions
+			{
+				wall
+				{
+      			    level (0 2);
+					//status 1 ;
+				}
+				roof
+				{
+      			    level (0 2);
+					//status 1 ;
+				}
+				ground
+				{
+      			    level (0 2);
+					//status 1 ;
+				}
+			}
+		}
+	}
+  refinementRegions
+	{
+	}
+
+	refinementRegions
+	{
+		BoxRefinement_1
+		{
+			mode	inside;
+			levels	((1E15 4));
+		}
+		BoxRefinement_2
+		{
+			mode	inside;
+			levels	((1E15 3));
+		}
+		BoxRefinement_3
+		{
+			mode	inside;
+			levels	((1E15 3));
+		}
+		BoxRefinement_4
+		{
+			mode	inside;
+			levels	((1E15 3));
+		}
+		BoxRefinement_5
+		{
+			mode	inside;
+			levels	((1E15 4));
+		}
+		BoxRefinement_5-2
+		{
+			mode	inside;
+			levels	((1E15 5));
+		}
+	}
+
+	//locationInMesh ( 46911  244 71 );//( -1 0 2 ) ;
+  locationInMesh ( 47201  -73100 90 );//( -1 0 2 ) ;
+}
+
+snapControls
+{
+    tolerance       2;
+    implicitFeatureSnap false;
+    explicitFeatureSnap true;
+    multiRegionFeatureSnap true;
+    detectNearSurfacesSnap true;
+    strictRegionSnap true;
+    nSmoothPatch    3;
+    nSolveIter      50;
+    nRelaxIter      5;
+    nFeatureSnapIter 10;
+    nSmoothInternal 3;
+    nFaceSplitInterval -1;
+}
+
+
+addLayersControls
+{
+	layers
+	{
+		roof
+		{
+			nSurfaceLayers 3;
+			//firstLayerThickness 0.1;
+			//expansionRatio 1.2;
+		}
+		wall
+		{
+			nSurfaceLayers 3;
+			//firstLayerThickness 0.1;
+			//expansionRatio 1.2;
+		}
+		ground
+		{
+			nSurfaceLayers 3;
+			//firstLayerThickness 0.1;
+			//expansionRatio 1.2;
+		}
+	}
+	relativeSizes    true;
+	expansionRatio    1.2 ;
+	firstLayerThickness   0.1 ;
+    featureAngle    180;
+    slipFeatureAngle 30;
+    nGrow           0;
+    nBufferCellsNoExtrude 0;
+    minMedialAxisAngle 90;
+    maxFaceThicknessRatio 0.2;
+    maxThicknessToMedialRatio 0.3;
+    minThickness    1e-06;
+    nLayerIter      50;
+    nRelaxIter      5;
+    nSmoothSurfaceNormals 10;
+    nSmoothNormals  3;
+    nSmoothThickness 10;
+    nRelaxedIter    10;
+    nMedialAxisIter 10;
+}
+
+meshQualityControls
+{
+    minVol          1e-13;
+    minTetQuality   1e-16;
+    minArea         1e-13;
+    minTwist        0.05;
+    minDeterminant  1e-06;
+    minFaceWeight   0.02;
+    minVolRatio     0.01;
+    minTriangleTwist -1;
+    minFlatness     0.5;
+    maxNonOrtho     70;
+    maxBoundarySkewness 20;
+    maxInternalSkewness 4;
+    maxConcave      80;
+    nSmoothScale    4;
+    errorReduction  0.75;
+
+    relaxed
+    {
+        minVol          1e-30;
+        minTetQuality   1e-30;
+        minArea         1e-30;
+        minTwist        0.001;
+        minDeterminant  1e-06;
+        minFaceWeight   1e-06;
+        minVolRatio     0.01;
+        minTriangleTwist -1;
+        minFlatness     0.5;
+        maxNonOrtho     75;
+        maxBoundarySkewness 20;
+        maxInternalSkewness 8;
+        maxConcave      80;
+        nSmoothScale    4;
+        errorReduction  0.75;
+    }
+}
+mergeTolerance  1e-04;//1e-07;
+debug           0;

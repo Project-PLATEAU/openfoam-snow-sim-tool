@@ -1,0 +1,38 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  6                                     |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      setFieldsDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+defaultFieldValues
+(
+  // initialize the whole domain to zero
+    volScalarFieldValue snowDepth 0
+);
+
+// region internal;
+regions
+(
+    boxToCell
+    {
+        box (-1.0 -1 -1.5) (1 1 -0.9);
+        fieldValues
+        (
+            volScalarFieldValue snowDepth 7
+        );
+    }
+);
+
+
+// total domain dimension: 
+// boundingBox: (-1.5 -2 -1) (1.5 2 1)

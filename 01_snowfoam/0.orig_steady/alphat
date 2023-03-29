@@ -1,0 +1,88 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2106                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      alphat;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [1 -1 -1 0 0 0 0];
+
+internalField   uniform 0;
+
+boundaryField
+{
+    boundaryInlet
+    {
+        type            calculated;
+        value           uniform 0;
+    }
+
+    boundaryOutlet
+    {
+        type            calculated;
+        value           uniform 0;
+    }
+
+    wall
+    {
+        type            compressible::alphatWallFunction;
+        Prt             0.85;
+        value           uniform 0;
+    }
+
+    roof
+    {
+        type            compressible::alphatWallFunction;
+        Prt             0.85;
+        value           uniform 0;
+    }
+
+        ground
+        {
+            type            compressible::alphatWallFunction;
+            Prt             0.85;
+            value           uniform 0;
+        }
+    boundaryYMinSide
+    {
+        type   slip;
+		//type            compressible::alphatWallFunction;
+        //Prt             0.85;
+        //value           uniform 0;
+    }
+
+    boundaryYMaxSide
+    {
+        type   slip;
+		//type            compressible::alphatWallFunction;
+        //Prt             0.85;
+        //value           uniform 0;
+    }
+
+    boundaryTop
+    {
+        type   slip;
+		//type            compressible::alphatWallFunction;
+        //Prt             0.85;
+        //value           uniform 0;
+    }
+
+    #includeEtc "caseDicts/setConstraintTypes"
+}
+
+
+
+
+
+
+
+// ************************************************************************* //

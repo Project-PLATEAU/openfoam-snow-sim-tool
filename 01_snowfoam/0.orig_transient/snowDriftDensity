@@ -1,0 +1,83 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  plus                                  |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      snowDriftDensity;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#include        "include/initialConditions"
+
+dimensions      [1 -3 0 0 0 0 0];  // kg m-3
+
+internalField   uniform 0;
+
+boundaryField
+{
+
+    // snow entering both from inlet and top patches:
+    boundaryInlet
+    {
+        type            fixedValue;
+        value           uniform $snowDriftDensityInlet;
+    }
+
+    boundaryOutlet
+    {
+        type            zeroGradient;
+    }
+
+    wall
+    {
+        type            zeroGradient;
+    }
+
+    roof
+    {
+        type            fixedValue;
+        value           uniform $snowDriftDensityInlet;
+        //type            zeroGradient;
+    }
+
+    ground
+    {
+        type            fixedValue;
+        value           uniform $snowDriftDensityInlet;
+        //type            zeroGradient;
+    }
+
+    boundaryYMinSide
+    {
+        //type            fixedValue;
+        //value           uniform 0;
+        type            zeroGradient;
+    }
+
+    boundaryYMaxSide
+    {
+        //type            fixedValue;
+        //value           uniform 0;
+        type            zeroGradient;
+    }
+
+    boundaryTop
+    {
+        //type            fixedValue;
+        //value           uniform 0;
+        type            zeroGradient;
+    }
+
+    //- Set patchGroups for constraint patches
+    #include "${WM_PROJECT_DIR}/etc/caseDicts/setConstraintTypes"
+}
+
+
+// ************************************************************************* //

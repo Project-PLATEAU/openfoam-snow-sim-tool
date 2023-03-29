@@ -1,0 +1,125 @@
+#!/bin/sh
+cd ${0%/*} || exit 1                        # Run from this directory
+
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+######################################################################## START USER INPUT
+# USER INPUT
+
+# Set the number of cores to be used for the parallel computation
+totNumberOfCores=8
+
+# latestTimeSteady = the latest time directory from the steady run to be used as initialization for the transient run:
+latestTimeSteady=500 # step テスト用
+#latestTimeSteady=1500
+
+# latestTimeTransient in second
+ latestTimeTransient=600 # seconds テスト用
+#latestTimeTransient=86400  # 24 hours of snow
+
+# write transient results to disk every
+writeIntervalTransient=100 # seconds テスト用
+#writeIntervalTransient=3600 # seconds
+
+################################################################# END USER INPUT
+
+# removing files from previous run
+rm -rf zzPolyMeshBackUp/
+rm -rf 0.orig
+rm -rf system
+
+# set up latest time in controlDict steady simulation
+sed -i "/endTime/ s/^endTime.*/endTime         $latestTimeSteady;/" system_steady/controlDict*
+
+# set up latest time in controlDict transient simulation
+sed -i "/endTime/ s/^endTime.*/endTime         $latestTimeTransient;/" system_transient/controlDict*
+
+# set up write-data-to-disk frequency in controlDict transient simulation
+sed -i "/writeInterval/ s/writeInterval.*/writeInterval   $writeIntervalTransient;/" system_transient/controlDict*
+
+
+cp -r 0.orig_steady 0.orig
+cp -r system_steady system
+
+# set up required processor number in decomposeParDict
+sed -i "/numberOfSubdomains/ s/numberOfSubdomains.*/numberOfSubdomains $totNumberOfCores;/" system/decomposeParDict
+
+# START MESHING ###################################################
+echo "START mesh generation and case preparation....."
+
+echo ">>-->> Create .foam file for post-processing"
+touch snowDrift.foam
+
+echo ">>-->> run blockMesh"
+
+ #***** 作成済みのメッシュをコピーする場合
+cp -r constant/polyMesh.tmp/ constant/polyMesh
+
+ #***** メッシュを新規作成する場合
+#blockMesh 2>&1 | tee log.blockMesh
+
+#*** IF UNSTRUCTURED MESH WANTED UNCOMMENT LINES TILL 73
+#surfaceFeatureExtract 2>&1 | tee log.surfaceFeatureExtract
+
+#decomposePar 2>&1 | tee log.decomposePar
+#restore0Dir -processor
+
+#mpirun -np $totNumberOfCores snappyHexMesh -overwrite -parallel 2>&1 | tee log.snappyHexMesh
+#mpirun -np $totNumberOfCores renumberMesh -parallel -overwrite | tee log.renumberMesh
+ 
+#*** reconstructMesh
+#reconstructParMesh -constant 2>&1 | tee log.reconstructParMesh
+ #*******************************************
+
+# backup mesh
+cp -r constant/polyMesh/ zzPolyMeshBackUp
+rm -rf processor*
+
+echo "END mesh generation and case preparation....."
+
+
+# START STEADY ####################################################
+
+echo "START STEADY ANALYSIS ....."
+
+decomposePar 2>&1 | tee log.decomposePar
+restore0Dir -processor
+
+mpirun -np $totNumberOfCores rhoSimpleFoam -parallel 2>&1 | tee log.rhoSimpleFoam
+reconstructPar -latestTime 2>&1 | tee log.reconstructPar_Steady
+
+rm -rf processor*
+
+# START TRANSIENT #################################################
+
+# use the latest time of steady as starting point for the transient simulation
+rm -rf 0
+mkdir 0
+cp $latestTimeSteady/* 0 # not using the "-r" flag so that the uniform directory inside $latestTimeSteady is not copied
+
+# backuping the latest time of steady analysis
+mv $latestTimeSteady zz$latestTimeSteady
+
+# adding the snowDepth and snowDriftDensity initial conditions files + "include" subdirectory
+cp -r 0.orig_transient/* 0
+
+rm -rf system
+cp -r system_transient system
+
+# set up required processor number in decomposeParDict
+sed -i "/numberOfSubdomains/ s/numberOfSubdomains.*/numberOfSubdomains $totNumberOfCores;/" system/decomposeParDict
+
+decomposePar 2>&1 | tee log.decomposeParForTransient
+
+mpirun -np $totNumberOfCores snowFoam -parallel 2>&1 | tee log.snowFoam
+ls
+
+reconstructPar -latestTime 2>&1 | tee log.reconstructPar_Transient
+
+# backup snowDepth and snowMass fields to be used as starting point for the sunny day snow evaporation simulation.
+cp -r $latestTimeTransient/snowDepth zzSnowDepthBackup
+cp -r $latestTimeTransient/snowMass zzSnowMassBackup
+
+(echo ">>-->> End of solver calculation the :" && date)
+
+#--------------------------------------------------------------------------------#
