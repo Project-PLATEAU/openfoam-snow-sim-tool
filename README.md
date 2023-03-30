@@ -2,7 +2,7 @@
 
 ## 1.概要
 3D都市モデルを利用した街区レベルでの風雪・融雪シミュレーションを行うためのOpenFOAMのソルバーです。
-本リポジトリでは、開発したソルバー「SnowFoam」及び「SnowMeltFoam」のスクリプトとその使用方法を提供しています。 
+本リポジトリでは、開発したソルバー「SnowFoam」及び「SnowMelt」のスクリプトとその使用方法を提供しています。 
 
 ## 2.「雪害対策支援ツール」について
 ### ユースケースの概要
@@ -19,11 +19,11 @@
 
 ## 3.利用手順
 本ユースケースで開発した「風雪・融雪シミュレーション」を行う手順は以下のとおりです。  
-OpenFOAMの基本的な使用法、「SnowFoam」及び「SnowMeltFoam」の解説、風雪・融雪シミュレーションの具体的な計算手順については、[「風雪・融雪シミュレーション計算手順マニュアル」]( https://matsuda-ts.github.io/PLATAEU-UC22-027-sim-windsnow-tool-Manual/)を参照ください。  
-「SnowFoam」及び「SnowMeltFoam」のテクニカルリファレンスは、「Wind and Snow Melting Simulation Using OpenFOAM Technical Reference.pdf」をダウンロードしてご覧ください。
+OpenFOAMの基本的な使用法、「SnowFoam」及び「SnowMelt」の解説、風雪・融雪シミュレーションの具体的な計算手順については、[「風雪・融雪シミュレーション計算手順マニュアル」]( https://matsuda-ts.github.io/PLATAEU-UC22-027-sim-windsnow-tool-Manual/)を参照ください。  
+「SnowFoam」及び「SnowMelt」のテクニカルリファレンスは、「Wind and Snow Melting Simulation Using OpenFOAM Technical Reference.pdf」をダウンロードしてご覧ください。
 
 1. OpenFOAMをインストール（ただしLinux環境でなければ、「風雪・融雪シミュレーション計算手順マニュアル」等に沿ってwindows上でLinux環境を構築する必要があります）  
-2. 本リポジトリから「SnowFoam」及び「SnowMeltFoam」をダウンロード  
+2. 本リポジトリから「SnowFoam」及び「SnowMelt」をダウンロード  
 3. OpenFOAMをダウンロードした際に構築されるケースディレクトリーにソルバーを移動  
 4. 用意されているシェルスクリプトを実行（サンプルの計算メッシュを利用）  
 5. 結果の評価にparaviewを利用（ParaViewをインストールしておいてください）  
@@ -62,7 +62,7 @@ OpenFOAMのインストールについては[「風雪・融雪シミュレー�
 :/usr/lib/openfoam/openfoam2206/mySolver/sourseCode$ ./Allwclean
 ```
 
-#### ３. カスタマイズコードをコンパイルするため、「.//Allwmake」を実行
+#### ３. カスタマイズコードをコンパイルするため、「./Allwmake」を実行
 
 ```
 :/usr/lib/openfoam/openfoam2206/mySolver/sourseCode$ ./Allwmake
