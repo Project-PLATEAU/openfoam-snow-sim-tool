@@ -19,7 +19,8 @@
 
 ## 3.利用手順
 本ユースケースで開発した「風雪・融雪シミュレーション」を行う手順は以下のとおりです。  
-OpenFOAMの基本的な使用法、「SnowFoam」及び「SnowMeltFoam」の解説、風雪・融雪シミュレーションの具体的な計算手順については、[「風雪・融雪シミュレーション計算手順マニュアル」]( https://matsuda-ts.github.io/PLATAEU-UC22-027-sim-windsnow-tool-Manual/)を参照ください。
+OpenFOAMの基本的な使用法、「SnowFoam」及び「SnowMeltFoam」の解説、風雪・融雪シミュレーションの具体的な計算手順については、[「風雪・融雪シミュレーション計算手順マニュアル」]( https://matsuda-ts.github.io/PLATAEU-UC22-027-sim-windsnow-tool-Manual/)を参照ください。  
+「SnowFoam」及び「SnowMeltFoam」のテクニカルリファレンスは、「Wind and Snow Melting Simulation Using OpenFOAM Technical Reference.pdf」をダウンロードしてご覧ください。
 
 1. OpenFOAMをインストール（ただしLinux環境でなければ、「風雪・融雪シミュレーション計算手順マニュアル」等に沿ってwindows上でLinux環境を構築する必要があります）  
 2. 本リポジトリから「SnowFoam」及び「SnowMeltFoam」をダウンロード  
@@ -72,8 +73,7 @@ OpenFOAMのインストールについては[「風雪・融雪シミュレー�
 ### 風雪・融雪シミュレーションの使い方（実行）
 #### １. プロジェクトフォルダーの作成
 OpneFOAMでは一般的に、ソルバー毎に用意されているチュートリアルをコピーし、それをベースにしてプロジェクトフォルダーを作成します。  
-本ユースケースでは、用いるソルバーに対してあらかじめ必要な情報をセットしてあります。
-風雪シミュレーションのプロジェクトフォルダー（01_snowfoam、02_snowMelt）をダウンロードし、作業する場所（例：desktop等）に保存します。
+本ユースケースでは、用いるソルバーに対してあらかじめ必要な情報をセットしたものを風雪シミュレーションのプロジェクトフォルダー（01_snowfoam、02_snowMelt）に用意してあります。これらををダウンロードし、作業する場所（例：desktop等）に保存してください。
 
 ![fig-3](./images/fig3.jpg)
 
