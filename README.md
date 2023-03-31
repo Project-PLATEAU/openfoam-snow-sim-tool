@@ -2,15 +2,15 @@
 
 ## 1.概要
 3D都市モデルを利用した街区レベルでの風雪・融雪シミュレーションを行うためのOpenFOAMのソルバーです。
-本リポジトリでは、開発したソルバー「SnowFoam」及び「SnowMeltFoam」のスクリプトとその使用方法を提供しています。 
+本リポジトリでは、開発したソルバー「SnowFoam」及び「SnowMelt」のスクリプトとその使用方法を提供しています。 
 
 ## 2.「雪害対策支援ツール」について
 ### ユースケースの概要
 本業務では、豪雪地帯における戦略的な雪害対策の立案を支援するため、雪害リスクを街区レベルで可視化し、建屋リスク（屋根雪による倒壊、落雪等）や除雪困難エリアの出現による孤立リスクの把握等を可能とする風雪・融雪のシミュレーションの開発を行いました。
 
 ### 開発システムの概要
-「SnowFoam」及び「SnowMelt」は、オープンソースのCFD解析ソフトウェアである OpenFOAM のソルバーであり、3D都市モデルを組み合わせることで街区レベルで吹き溜まりや日陰部分の残雪等の詳細な解析を可能とするものです。  
-「SnowFoam」及び「SnowMeltFoam」は、OpenFOAMの標準ソルバーである「rhoPimpleFoam」（非定常の圧縮性乱流解析ソルバー）及び「thermoFoam」（凍結した流れ場での熱輸送解析ソルバー）の2つカスタマイズすることで開発しています。
+「SnowFoam」及び「Snow」は、オープンソースのCFD解析ソフトウェアである OpenFOAM のソルバーであり、3D都市モデルを組み合わせることで街区レベルで吹き溜まりや日陰部分の残雪等の詳細な解析を可能とするものです。  
+「SnowFoam」及び「SnowMelt」は、OpenFOAMの標準ソルバーである「rhoPimpleFoam」（非定常の圧縮性乱流解析ソルバー）及び「thermoFoam」（凍結した流れ場での熱輸送解析ソルバー）の2つカスタマイズすることで開発しています。
 カスタマイズは、新潟工科大学富永教授が開発した3次元気流解析に基づく雪の浸食・堆積と、雪面熱収支に基づく融雪の推定モデルを表現できるように行いました。  
 
 シミュレーション条件として、3D都市モデルの地形・地物データをSTL形式としてインプットし、境界条件として、気象関連データ（時間毎の風向・風速、積雪、気温、日射量）を設定します。  
@@ -19,11 +19,11 @@
 
 ## 3.利用手順
 本ユースケースで開発した「風雪・融雪シミュレーション」を行う手順は以下のとおりです。  
-OpenFOAMの基本的な使用法、「SnowFoam」及び「SnowMeltFoam」の解説、風雪・融雪シミュレーションの具体的な計算手順については、[「風雪・融雪シミュレーション計算手順マニュアル」]( https://matsuda-ts.github.io/PLATAEU-UC22-027-sim-windsnow-tool-Manual/)を参照ください。  
-「SnowFoam」及び「SnowMeltFoam」のテクニカルリファレンスは、「Wind and Snow Melting Simulation Using OpenFOAM Technical Reference.pdf」をダウンロードしてご覧ください。
+OpenFOAMの基本的な使用法、「SnowFoam」及び「SnowMelt」の解説、風雪・融雪シミュレーションの具体的な計算手順については、[「風雪・融雪シミュレーション計算手順マニュアル」]( https://matsuda-ts.github.io/PLATAEU-UC22-027-sim-windsnow-tool-Manual/)を参照ください。  
+「SnowFoam」及び「SnowMelt」のテクニカルリファレンスは、「Wind and Snow Melting Simulation Using OpenFOAM Technical Reference.pdf」をダウンロードしてご覧ください。
 
 1. OpenFOAMをインストール（ただしLinux環境でなければ、「風雪・融雪シミュレーション計算手順マニュアル」等に沿ってwindows上でLinux環境を構築する必要があります）  
-2. 本リポジトリから「SnowFoam」及び「SnowMeltFoam」をダウンロード  
+2. 本リポジトリから「SnowFoam」及び「SnowMelt」をダウンロード  
 3. OpenFOAMをダウンロードした際に構築されるケースディレクトリーにソルバーを移動  
 4. 用意されているシェルスクリプトを実行（サンプルの計算メッシュを利用）  
 5. 結果の評価にparaviewを利用（ParaViewをインストールしておいてください）  
@@ -51,7 +51,7 @@ OpenFOAMのインストールについては[「風雪・融雪シミュレー�
  
 ![fig-1](./images/fig1.jpg)
  
-なお、mySolverの中には、風雪シミュレーションの「snowFOAM」、融雪シミュレーションの「snowMeltFoam」のソースのほかに、コンパイル用のシェルスクリプトが格納されています。
+なお、mySolverの中には、風雪シミュレーションの「snowFOAM」、融雪シミュレーションの「snowMelt」のソースのほかに、コンパイル用のシェルスクリプトが格納されています。
 
 ![fig-2](./images/fig2.jpg)
  
