@@ -1,0 +1,161 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>UC22-027「雪害対策支援ツール」 </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="UC22-027「雪害対策支援ツール」 ">
+    
+      <link rel="shortcut icon" href="favicon.ico">
+      <link rel="stylesheet" href="styles/docfx.vendor.css">
+      <link rel="stylesheet" href="styles/docfx.css">
+      <link rel="stylesheet" href="styles/main.css">
+      <meta property="docfx:navrel" content="toc.html">
+      <meta property="docfx:tocrel" content="articles/toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="index.html">
+                <img id="logo" class="svg" src="logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h3 id="uc22-027雪害対策支援ツール">UC22-027「雪害対策支援ツール」</h3>
+
+<h2 id="風雪融雪シミュレーション計算手順マニュアル">風雪・融雪シミュレーション計算手順マニュアル</h2>
+<p><img src="images/fig_1.jpg" alt=""></p>
+<p>国土交通省社会的課題解決ユースケース開発UC22-027「雪害対策支援ツール」に開発した風雪・融雪シミュレーションでは、オープンソフトの数値流体力学のツールボックスであるOpenFOAMを用いています。
+本マニュアルは、OpenFOAMの基本的な使用方法、本ユースケースで開発したカスタマイズソルバーの解説ならびに風雪・融雪シミュレーションの計算手順を示したものです。
+また、計算結果の評価については、データを「グラフ」や「アニメーション」により可視化する必要があります。これにはオープンソースのParaViewを使用しています。</p>
+<p>なお、OpenFOAMの利用にあたっては、Linux環境関する知識や数値流体力学に関する知識が必要になります。本マニュアルでは、これらの解説は付録に簡単に述べていますが、詳細は、下記のサイトや専門書等を参照してください。
+（参考サイト）https://ss1.xrea.com/penguinitis.g1.xrea.com/study/OpenFOAM/</p>
+<p>なお、本アセットに3D都市モデルは含まれておりません。</p>
+<ul>
+<li><p><a href="articles/OpenFOAM_installation_instructions.html">環境構築手順</a></p>
+</li>
+<li><p><a href="articles/OpenFOAM_installation_instructions.html">OpenFOAM利用環境構築手順</a></p>
+</li>
+</ul>
+<ol>
+<li><a href="articles/OpenFOAM_installation_instructions.html">Windows Subsystem for Linux （WSL1）の設定</a></li>
+<li><a href="articles/Ubuntu_installation_instructions.html">Ubuntuのインストール</a></li>
+<li><a href="articles/Install_Openfoam2206.html">Openfoam2206(コンパイル済み)をインストール</a></li>
+</ol>
+<ul>
+<li><p><a href="articles/Paraview_Installation_Instructions.html">Para viewのインストール手順</a></p>
+</li>
+<li><p><a href="articles/Basic_usage.html">風雪・融雪シミュレーション計算手順マニュアル</a></p>
+</li>
+<li><p><a href="articles/Basic_usage.html">OpenFOAMの基本的な使用方法</a></p>
+</li>
+</ul>
+<ol>
+<li><a href="articles/Create_case_directry.html">ケースディレクトリの作成</a></li>
+<li><a href="articles/Setting_calculation_conditions.html">計算条件の設定</a></li>
+<li><a href="articles/Mesh_creation.html">メッシュ作成</a></li>
+<li><a href="articles/Inflow_boundary_condition.html">流入境界条件</a></li>
+</ol>
+<ul>
+<li><a href="articles/Explanation_of_the_developed_customized_solver.html">開発したカスタマイズソルバーの解説</a></li>
+</ul>
+<ol>
+<li><a href="articles/Explanation_of_the_developed_customized_solver.html">ソルバーの開発について</a></li>
+<li><a href="articles/Type_of_physical_quantity_of_boundary_condition.html">境界条件の物理量のType</a></li>
+<li><a href="articles/Setting_physical_properties.html">物性値等の設定</a></li>
+</ol>
+<ul>
+<li><a href="articles/Calculation_procedure_for_wind_and_snow_melting_simulation.html">風雪・融雪シミュレーションの計算手順</a></li>
+</ul>
+<ol>
+<li><a href="articles/Calculation_procedure_for_wind_and_snow_melting_simulation.html">計算フロー</a></li>
+<li><a href="articles/Calculation_execution_steps.html">計算の実行手順</a></li>
+<li><a href="articles/Shell_script_for_wind_and_snow_calculation.html">シェルスクリプト(風雪計算時)</a></li>
+<li><a href="articles/Shell_script_when_calculating_snowmelt.html">シェルスクリプト(融雪計算時)</a></li>
+<li><a href="articles/Display_of_calculation_results.html">計算結果の表示 (Paraviewで表示)</a></li>
+</ol>
+<ul>
+<li><a href="articles/Evaluation_of_results_Paraview.html">結果の評価(Paraview)</a></li>
+</ul>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>
