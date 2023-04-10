@@ -6,7 +6,8 @@
 
 ## 2.「雪害対策支援ツール」について
 ### ユースケースの概要
-本業務では、豪雪地帯における戦略的な雪害対策の立案を支援するため、雪害リスクを街区レベルで可視化し、建屋リスク（屋根雪による倒壊、落雪等）や除雪困難エリアの出現による孤立リスクの把握等を可能とする風雪・融雪のシミュレーションの開発を行いました。
+本業務では、豪雪地帯における戦略的な雪害対策の立案を支援するため、雪害リスクを街区レベルで可視化し、建屋リスク（屋根雪による倒壊、落雪等）や除雪困難エリアの出現による孤立リスクの把握等を可能とする風雪・融雪のシミュレーションの開発を行いました。  
+詳細は[技術検証レポート](https://www.mlit.go.jp/plateau/file/libraries/doc/plateau_tech_doc_0019_ver01.pdf)を参照してください。
 
 ### 開発システムの概要
 「SnowFoam」及び「SnowMelt」は、オープンソースのCFD解析ソフトウェアである OpenFOAM のソルバーであり、3D都市モデルを組み合わせることで街区レベルで吹き溜まりや日陰部分の残雪等の詳細な解析を可能とするものです。  
@@ -111,7 +112,7 @@ OpneFOAMでは一般的に、ソルバー毎に用意されているチュート
 * 本リポジトリの利用により生じた損失及び損害等について、国土交通省はいかなる責任を負わないものとします。
 
 ## 6.参考資料
-* （近日公開）技術検証レポート: https://www.mlit.go.jp/plateau/libraries/technical-reports/
+* 技術検証レポート: https://www.mlit.go.jp/plateau/file/libraries/doc/plateau_tech_doc_0019_ver01.pdf
 * PLATEAU Webサイト Use caseページ「雪害対策支援ツール」: https://www.mlit.go.jp/plateau/use-case/uc27-022/
 * OpenFOAMの説明サイト：https://ss1.xrea.com/penguinitis.g1.xrea.com/study/OpenFOAM/index.html
 * OpenFOAMに関する参考書：https://ja.wikipedia.org/wiki/OpenFOAM
