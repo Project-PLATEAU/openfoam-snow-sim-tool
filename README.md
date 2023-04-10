@@ -1,5 +1,6 @@
 # FY2022 PLATAEU-UC22-027「雪害対策支援ツール」の成果物
 ### openfoam-snow-sim-tool
+![image](https://user-images.githubusercontent.com/79615787/230897801-095f0647-fc47-4e5d-97fc-595196a42ce1.png)
 
 
 ## 1.概要
