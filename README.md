@@ -116,6 +116,6 @@ OpneFOAMでは一般的に、ソルバー毎に用意されているチュート
 
 ## 6.参考資料
 * 技術検証レポート: https://www.mlit.go.jp/plateau/file/libraries/doc/plateau_tech_doc_0019_ver01.pdf
-* PLATEAU Webサイト Use caseページ「雪害対策支援ツール」: https://www.mlit.go.jp/plateau/use-case/uc27-022/
+* PLATEAU Webサイト Use caseページ「雪害対策支援ツール」: https://www.mlit.go.jp/plateau/use-case/uc22-027/
 * OpenFOAMの説明サイト：https://ss1.xrea.com/penguinitis.g1.xrea.com/study/OpenFOAM/index.html
 * OpenFOAMに関する参考書：https://ja.wikipedia.org/wiki/OpenFOAM
