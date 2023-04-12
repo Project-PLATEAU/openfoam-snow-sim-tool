@@ -23,7 +23,7 @@
 
 ## 3.利用手順
 本ユースケースで開発した「風雪・融雪シミュレーション」を行う手順は以下のとおりです。  
-OpenFOAMの基本的な使用法、「SnowFoam」及び「SnowMelt」の解説、風雪・融雪シミュレーションの具体的な計算手順については、[「風雪・融雪シミュレーション計算手順マニュアル」]( https://matsuda-ts.github.io/PLATAEU-UC22-027-openfoam-snow-sim-tool/)を参照ください。  
+OpenFOAMの基本的な使用法、「SnowFoam」及び「SnowMelt」の解説、風雪・融雪シミュレーションの具体的な計算手順については、[「風雪・融雪シミュレーション計算手順マニュアル」](https://project-plateau.github.io//PLATAEU-UC22-027-sim-windsnow-tool-Manual/)を参照ください。  
 「SnowFoam」及び「SnowMelt」のテクニカルリファレンスは、「Wind and Snow Melting Simulation Using OpenFOAM Technical Reference.pdf」をダウンロードしてご覧ください。
 
 1. OpenFOAMをインストール（ただしLinux環境でなければ、「風雪・融雪シミュレーション計算手順マニュアル」等に沿ってwindows上でLinux環境を構築する必要があります）  
