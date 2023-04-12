@@ -43,7 +43,7 @@ Memory　64GB RAM
 ディストリビューション Ubuntu22.04  
 
 ### 事前準備
-OpenFOAMのインストールについては[「風雪・融雪シミュレーション計算手順マニュアル」](https://matsuda-ts.github.io/PLATAEU-UC22-027-sim-windsnow-tool-Manual/)にも記載がありますが、詳細は、[こちら](https://ss1.xrea.com/penguinitis.g1.xrea.com/study/OpenFOAM/install_memo/install_memo.html)を参考にしてください。  
+OpenFOAMのインストールについては[「風雪・融雪シミュレーション計算手順マニュアル」](https://project-plateau.github.io//PLATAEU-UC22-027-sim-windsnow-tool-Manual/)にも記載がありますが、詳細は、[こちら](https://ss1.xrea.com/penguinitis.g1.xrea.com/study/OpenFOAM/install_memo/install_memo.html)を参考にしてください。  
 風雪・融雪計算に用いる地物モデルは、3D都市モデルの建築物LOD2、地形LOD1をFME Dsektopにより三角形のポリゴンの頂点座標と面の法線ベクトルで構成されたSTL形式のデータに変換して作成します。STLデータはParaViewで可視化できます。STL形式のデータからOpenFOAMのソルバーを使って計算メッシュを作成します。なお、本リポジトリ―ではサンプルのメッシュデータを用意してあります。
 
 ![fig-00](./images/fig00.jpg)
